@@ -11,7 +11,7 @@ class App(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle('tp_tool')
+        self.setWindowTitle('tpTool')
 
         layout = QVBoxLayout()
 
