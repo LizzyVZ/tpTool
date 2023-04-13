@@ -32,7 +32,7 @@ class App(QWidget):
         self.subregion = QLineEdit()
         self.tail_number = QLineEdit()
         hbox2 = QHBoxLayout()
-        hbox2.addWidget(QLabel('命名规则:'))
+        hbox2.addWidget(QLabel('命名规则：'))
         hbox2.addWidget(self.seq)
         hbox2.addWidget(self.region)
         hbox2.addWidget(self.subregion)
