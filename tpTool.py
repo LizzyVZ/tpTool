@@ -85,18 +85,22 @@ class App(QWidget):
         if pattern.match(region) and pattern.match(subregion) and tail_number.isdigit():
             files = [f for f in os.listdir(target_folder) if f.endswith('.json')]
 
+            tail_number_int = int(tail_number)
             for i, file in enumerate(files):
                 with open(os.path.join(target_folder, file), 'r', encoding='utf-8') as f:
                     data = json.load(f)
 
-                if 'name' in data:
-                    data['name'] = f'{seq}_{region}_{subregion}_{tail_number}'
-
-                new_file_name = f'{seq}_{region}_{subregion}_{int(tail_number) + i}.json'
+                new_tail_number = str(tail_number_int + 1000)[1:]
+                new_file_name = f'{seq}_{region}_{subregion}_{new_tail_number}.json'
                 new_file_path = os.path.join(new_folder, new_file_name)
+
+                if 'name' in data:
+                    data['name'] = new_file_name[:-5]
 
                 with open(new_file_path, 'w', encoding='utf-8') as f:
                     json.dump(data, f, ensure_ascii=False)
+
+                tail_number_int += 1
         else:
             raise ValueError('输入无效，请检查并重新输入')
 
