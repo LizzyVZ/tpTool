@@ -11,7 +11,7 @@ class App(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle('tpTool')
+        self.setWindowTitle('tpTool 1.3')
 
         layout = QVBoxLayout()
 
@@ -26,16 +26,16 @@ class App(QWidget):
         layout.addLayout(hbox1)
 
         # 命名规则输入
-        self.seq = QComboBox()
-        self.seq.addItems(['01', '02', '03', '04', '05', '06', '07', '08', '09'])
-        self.region = QLineEdit()
-        self.subregion = QLineEdit()
+        self.region = QComboBox()
+        self.region.addItems(['01_蒙德_1.0', '01_蒙德_1.0', '02_璃月_1.0', '02_璃月_2.6_层岩巨渊', '03_稻妻_2.0', '03_稻妻_2.4_渊下宫', '04_须弥_3.0_雨林', '04_须弥_3.1_沙漠', '04_须弥_3.1_沙漠', '04_须弥_3.6_苍漠'])
+        self.rename = QLineEdit()
         self.tail_number = QLineEdit()
         hbox2 = QHBoxLayout()
-        hbox2.addWidget(QLabel('命名规则：'))
-        hbox2.addWidget(self.seq)
+        hbox2.addWidget(QLabel('地区：'))
         hbox2.addWidget(self.region)
-        hbox2.addWidget(self.subregion)
+        hbox2.addWidget(QLabel('名称：'))
+        hbox2.addWidget(self.rename)
+        hbox2.addWidget(QLabel('尾号：'))
         hbox2.addWidget(self.tail_number)
         layout.addLayout(hbox2)
 
@@ -72,9 +72,8 @@ class App(QWidget):
     def rename_files(self):
         target_folder = self.folder_path.text()
         new_folder = self.new_folder_path.text()
-        seq = self.seq.currentText()
-        region = self.region.text()
-        subregion = self.subregion.text()
+        region = self.region.currentText()
+        rename = self.rename.text()
         tail_number = self.tail_number.text()
 
         if not os.path.exists(new_folder):
@@ -82,7 +81,7 @@ class App(QWidget):
 
         pattern = re.compile(r'^[\u4e00-\u9fa5_a-zA-Z0-9]+$')
 
-        if pattern.match(region) and pattern.match(subregion) and tail_number.isdigit():
+        if pattern.match(rename) and tail_number.isdigit():
             files = [f for f in os.listdir(target_folder) if f.endswith('.json')]
 
             tail_number_int = int(tail_number)
@@ -91,7 +90,7 @@ class App(QWidget):
                     data = json.load(f)
 
                 new_tail_number = str(tail_number_int + 1000)[1:]
-                new_file_name = f'{seq}_{region}_{subregion}_{new_tail_number}.json'
+                new_file_name = f'{region}_{rename}_{new_tail_number}.json'
                 new_file_path = os.path.join(new_folder, new_file_name)
 
                 if 'name' in data:
@@ -107,8 +106,7 @@ class App(QWidget):
     def clear_inputs(self):
         self.folder_path.clear()
         self.new_folder_path.clear()
-        self.region.clear()
-        self.subregion.clear()
+        self.rename.clear()
         self.tail_number.clear()
 
 if __name__ == '__main__':
